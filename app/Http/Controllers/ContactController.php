@@ -15,7 +15,10 @@ class ContactController extends Controller
         $contacts = Contact::orderBy('first_name', 'asc')->where(function($query){
             if ($companyId = request('company_id')) {
                 $query->where('company_id',$companyId);
-            }            
+            }       
+            if ($search = request('search')) {
+                $query->where('first_name','LIKE',"%{$search}%");
+            }     
         })->paginate(10);
         return view('contacts.index', compact('contacts', 'companies'));
     }
